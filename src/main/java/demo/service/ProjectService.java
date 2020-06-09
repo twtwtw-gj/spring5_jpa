@@ -2,6 +2,7 @@ package demo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.BeanUtils;
@@ -32,13 +33,11 @@ public class ProjectService {
 
     public List<ProjectDto> getList(){
 
-        List<ProjectDto> list = new ArrayList<>();
-
-        projectRepository.findAll().forEach(projectDto ->{
+        List<ProjectDto> list = projectRepository.findAll().stream().map(projectDto ->{
             ProjectDto dto = new ProjectDto();
             BeanUtils.copyProperties(projectDto, dto);
-            list.add(dto);
-        });
+            return dto;
+        }).collect(Collectors.toList());
 
         return list;
     }
